@@ -5,9 +5,18 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Separator } from "@radix-ui/react-separator"; // Ensure correct import
+import { LoginInputState } from "@/schema/UserSchema";
+
+// here we can use typescript that means alreday define
+// the types of the used of the variables two method one
+// is type other interface
+// type LoginInputState = {
+//   email: string;
+//   password: string;
+// };
 
 export const Login = () => {
-  const [input, setInput] = useState({
+  const [input, setInput] = useState<LoginInputState>({
     email: "",
     password: "",
   });
