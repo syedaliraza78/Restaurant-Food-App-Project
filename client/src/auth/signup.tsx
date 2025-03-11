@@ -1,4 +1,3 @@
-import { Label } from "@/components/ui/label";
 import { Loader2, LockKeyhole, Mail, PhoneCall, User } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { ChangeEvent, FormEvent, useState } from "react";
@@ -135,9 +134,9 @@ export const Signup = () => {
           ) : (
             <Button
               type="submit"
-              className="w-full bg-orange hover:bg-hoverOrange"
+              className="w-full bg-orange  cursor-pointer hover:bg-hoverOrange"
             >
-              Login
+              Signup
             </Button>
           )}
         </div>

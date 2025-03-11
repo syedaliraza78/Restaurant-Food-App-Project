@@ -1,11 +1,10 @@
-import { Label } from "@/components/ui/label";
 import { Loader2, LockKeyhole, Mail } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Separator } from "@radix-ui/react-separator"; // Ensure correct import
-import { LoginInputState } from "@/schema/UserSchema";
+import { Separator } from "@/components/ui/separator"; // Ensure correct import
+import { LoginInputState, LoginzodSchema } from "@/schema/UserSchema";
 
 // here we can use typescript that means alreday define
 // the types of the used of the variables two method one
@@ -22,6 +21,7 @@ export const Login = () => {
   });
 
   const [loading, setLoading] = useState(false); // Manage loading dynamically
+  const [error, setError] = useState<Partial<LoginInputState>>({});
 
   const changeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -30,6 +30,14 @@ export const Login = () => {
 
   const loginSubmitHandler = (e: FormEvent) => {
     e.preventDefault();
+    // zod validation is successful
+    const result = LoginzodSchema.safeParse(input);
+    if (!result.success) {
+      // if partial error one or more error
+      const fieldErrors = result.error.formErrors.fieldErrors;
+      setError(fieldErrors as Partial<LoginInputState>);
+      return;
+    }
     setLoading(true);
 
     // Simulating an API call delay
@@ -59,6 +67,9 @@ export const Login = () => {
               className="pl-10 focus-visible:ring-1"
             />
             <Mail className="absolute inset-y-2 left-2 text-gray-500 pointer-events-none" />
+            {error && (
+              <span className="text-xs text-red-500">{error.email}</span>
+            )}
           </div>
         </div>
         <div className="mb-4">
@@ -72,6 +83,9 @@ export const Login = () => {
               className="pl-10 focus-visible:ring-1"
             />
             <LockKeyhole className="absolute inset-y-2 left-2 text-gray-500 pointer-events-none" />
+            {error && (
+              <span className="text-xs text-red-500">{error.password}</span>
+            )}
           </div>
         </div>
         <div className="mb-10">
@@ -83,15 +97,23 @@ export const Login = () => {
           ) : (
             <Button
               type="submit"
-              className="w-full bg-orange hover:bg-hoverOrange"
+              className="w-full bg-orange hover:bg-hoverOrange cursor-pointer"
             >
               Login
             </Button>
           )}
+          <div className="mt-4 flex justify-center">
+            <Link
+              to="/forgetpassword"
+              className="hover:text-blue-500 hover:underline"
+            >
+              Forgot Password
+            </Link>
+          </div>
         </div>
 
-        <Separator />
-        <p className="mt-2 flex justify-center">
+        <Separator className="-mt-5" />
+        <p className="mt-3 flex justify-center">
           Don't have an account?{" "}
           <Link to="/signup" className="text-blue-500 ml-1">
             Signup
