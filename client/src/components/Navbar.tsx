@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+// import avatar from "@/assets/avatar.png";
+// import react from "@/assets/react.svg"
 import {
   Menubar,
   MenubarContent,

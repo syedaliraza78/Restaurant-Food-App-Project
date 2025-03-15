@@ -6,6 +6,7 @@ import { ResetPassword } from "./auth/ResetPassword";
 import { VerifyEmail } from "./auth/VerifyEmail";
 import { Mainlayout } from "./layput/Mainlayout";
 import { HeroSection } from "./components/HeroSection";
+import { Profile } from "./components/Profile";
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -14,6 +15,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/",
         element: <HeroSection />,
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
       },
     ],
   },
