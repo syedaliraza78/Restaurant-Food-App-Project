@@ -1,17 +1,19 @@
 import { Login } from "./auth/login";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Mainlayout } from "./MainLayout";
 import { Signup } from "./auth/signup";
 import { ForgotPassword } from "./auth/ForgetPassword";
 import { ResetPassword } from "./auth/ResetPassword";
 import { VerifyEmail } from "./auth/VerifyEmail";
+import { Mainlayout } from "./layput/Mainlayout";
+import { HeroSection } from "./components/HeroSection";
 const appRouter = createBrowserRouter([
   {
     path: "/",
     element: <Mainlayout />,
     children: [
       {
-        // element: <Login />,
+        path: "/",
+        element: <HeroSection />,
       },
     ],
   },
