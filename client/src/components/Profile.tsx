@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useUserStore } from "@/store/useUserStore";
 import {
@@ -26,6 +26,7 @@ export const Profile = () => {
   });
 
   const [loading, setLoading] = useState<boolean>(false); // Manage loading dynamically
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const imageRef = useRef<HTMLInputElement | null>(null);
 
@@ -52,13 +53,24 @@ export const Profile = () => {
     const { name, value } = e.target;
     setProfileData({ ...profileData, [name]: value });
   };
+
+  const updateProfileHandler = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      setIsLoading(true);
+      await updateProfile(profileData);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+    }
+  };
   return (
-    <form>
+    <form onSubmit={updateProfileHandler} className="max-w-7xl mx-auto my-5">
       <div className="flex items-center justify-between mx-10">
         <div className="flex items-center gap-2">
           <Avatar className="relative md:w-28 md:h-28 w-20 h-20">
             <AvatarImage src={selectedProfilePicture} />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarFallback>Profile</AvatarFallback>
             <input
               ref={imageRef}
               className="hidden"
