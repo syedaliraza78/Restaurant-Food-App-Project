@@ -66,14 +66,22 @@ export const Navbar = () => {
                 <MenubarMenu>
                   <MenubarTrigger>Dashboard</MenubarTrigger>
                   <MenubarContent>
-                    <Link to="/admin/restaurant">
-                      <MenubarItem>Restaurant</MenubarItem>
+                    <Link to="/admin/resturant">
+                      <MenubarItem>
+                        {" "}
+                        <UtensilsCrossed />
+                        Restaurant
+                      </MenubarItem>
                     </Link>
                     <Link to="/admin/menu">
-                      <MenubarItem>Menu</MenubarItem>
+                      <MenubarItem>
+                        <SquareMenu /> Menu
+                      </MenubarItem>
                     </Link>
                     <Link to="/admin/orders">
-                      <MenubarItem>Orders</MenubarItem>
+                      <MenubarItem>
+                        <HandPlatter /> Orders
+                      </MenubarItem>
                     </Link>
                   </MenubarContent>
                 </MenubarMenu>
@@ -193,6 +201,16 @@ const MobileNavbar = () => {
             <ShoppingCart />
             <span>Cart (0)</span>
           </Link>
+
+          {/*  */}
+          <Link
+            to="/admin/resturant"
+            className="flex items-center gap-4 hover:bg-gray-200 px-3 py-2 rounded-lg cursor-pointer hover:text-gray-900 font-medium"
+          >
+            <ShoppingCart />
+            <span>Resturant</span>
+          </Link>
+          {/*  */}
           {user?.admin && (
             <>
               <Link
@@ -203,7 +221,7 @@ const MobileNavbar = () => {
                 <span>Menu</span>
               </Link>
               <Link
-                to="/admin/restaurant"
+                to="admin/resturant"
                 className="flex items-center gap-4 hover:bg-gray-200 px-3 py-2 rounded-lg cursor-pointer hover:text-gray-900 font-medium"
               >
                 <UtensilsCrossed />
