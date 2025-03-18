@@ -20,7 +20,7 @@ export const Resturnat = () => {
   });
   const [errors, setErrors] = useState<Partial<RestaurantFormSchema>>({});
   const {
-    loading,
+    // loading,
     restaurant,
     updateRestaurant,
     createRestaurant,
@@ -30,15 +30,24 @@ export const Resturnat = () => {
     const { name, value, type } = e.target;
     setInput({ ...input, [name]: type === "number" ? Number(value) : value });
   };
+  const [loading, setLoading] = useState(false); // Manage loading dynamically
+
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
 
+    // Simulating an API call delay
+    setTimeout(() => {
+      setLoading(false);
+      console.log("Logged in:", input);
+    }, 2000);
     const result = restaurantFromSchema.safeParse(input);
     if (!result.success) {
       const fieldErrors = result.error.formErrors.fieldErrors;
       setErrors(fieldErrors as Partial<RestaurantFormSchema>);
       return;
     }
+
     // add restaurant api implementation start from here
     try {
       const formData = new FormData();
