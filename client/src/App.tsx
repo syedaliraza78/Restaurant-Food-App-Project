@@ -12,6 +12,8 @@ import { RestaurantDeails } from "./components/ResturantDeails";
 import { Cart } from "./components/Cart";
 import { Resturnat } from "./admin/Restaurant";
 import { AddMenu } from "./admin/AddMenu";
+import { AdminOrder } from "./admin/Order";
+import { Success } from "./components/Success";
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -37,6 +39,10 @@ const appRouter = createBrowserRouter([
         path: "/cart",
         element: <Cart />,
       },
+      {
+        path: "/order/status",
+        element: <Success />,
+      },
       // here admin service routes will be added
       {
         path: "admin/resturant",
@@ -45,6 +51,10 @@ const appRouter = createBrowserRouter([
       {
         path: "admin/menu",
         element: <AddMenu />,
+      },
+      {
+        path: "admin/orders",
+        element: <AdminOrder />,
       },
     ],
   },
