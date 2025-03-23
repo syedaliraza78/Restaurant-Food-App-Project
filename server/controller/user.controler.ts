@@ -5,6 +5,12 @@ import crypto from "crypto";
 import cloudinary from "../utils/cloudnary.js";
 import { generateVerificationCode } from "../utils/generateVerficationCode.js";
 import { generateToken } from "../utils/generateToken.js";
+import {
+  sendPasswordResetEmail,
+  sendResetSuccessEmail,
+  sendVerificationEmail,
+  sendWelcomeEmail,
+} from "../mailtrap/email.js";
 export const signup = async (req: Request, res: Response) => {
   try {
     const { fullname, email, password, contact } = req.body;
@@ -27,7 +33,7 @@ export const signup = async (req: Request, res: Response) => {
       verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000,
     });
     generateToken(res, user);
-    // await sendVerificationEmail(email, verificationToken);
+    await sendVerificationEmail(email, verificationToken);
     const userWithoutPassword = await User.findOne({ email }).select(
       "-password"
     );
@@ -59,7 +65,7 @@ export const login = async (req: Request, res: Response) => {
         message: "Incorrect email or password",
       });
     }
-    //  generateToken(res, user);
+    generateToken(res, user);
     user.lastLogin = new Date();
     await user.save();
     // send user without passowrd
@@ -94,7 +100,7 @@ export const verifyEmail = async (req: Request, res: Response) => {
     user.verificationTokenExpiresAt = undefined;
     await user.save();
     // send welcome email
-    //  await sendWelcomeEmail(user.email, user.fullname);
+    await sendWelcomeEmail(user.email, user.fullname);
 
     return res.status(200).json({
       success: true,
@@ -135,7 +141,10 @@ export const forgotPassword = async (req: Request, res: Response) => {
     user.resetPasswordToken = resetToken;
     user.resetPasswordTokenExpiresAt = resetTokenExpiresAt;
     await user.save();
-    // await sendPasswordResetEmail(user.email, `${process.env.FRONTEND_URL}/resetpassword/${resetToken}`);
+    await sendPasswordResetEmail(
+      user.email,
+      `${process.env.FRONTEND_URL}/resetpassword/${resetToken}`
+    );
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Internal server error" });
@@ -164,7 +173,7 @@ export const resetPassword = async (req: Request, res: Response) => {
     await user.save();
 
     // send success reset email
-    // await sendResetSuccessEmail(user.email);
+    await sendResetSuccessEmail(user.email);
 
     return res.status(200).json({
       success: true,
