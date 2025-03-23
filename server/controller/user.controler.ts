@@ -3,6 +3,8 @@ import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import cloudinary from "../utils/cloudnary.js";
+import { generateVerificationCode } from "../utils/generateVerficationCode.js";
+import { generateToken } from "../utils/generateToken.js";
 export const signup = async (req: Request, res: Response) => {
   try {
     const { fullname, email, password, contact } = req.body;
@@ -15,7 +17,7 @@ export const signup = async (req: Request, res: Response) => {
       });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const verificationToken = "khbjgkjb"; //generateVerificationCode();
+    const verificationToken = generateVerificationCode();
     user = await User.create({
       fullname,
       email,
@@ -24,7 +26,7 @@ export const signup = async (req: Request, res: Response) => {
       verificationToken,
       verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000,
     });
-    // generateToken(res,user);
+    generateToken(res, user);
     // await sendVerificationEmail(email, verificationToken);
     const userWithoutPassword = await User.findOne({ email }).select(
       "-password"
