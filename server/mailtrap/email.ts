@@ -80,3 +80,19 @@ export const sendResetSuccessEmail = async (email: string) => {
     throw new Error("Failed to send password reset success email");
   }
 };
+
+// export const sendResetSuccessEmail = async (email: string) => {
+//   const recipient = [{ email }];
+//   const htmlContent = generateResetSuccessEmailHtml();
+//   try {
+//     const res = await client.send({
+//       from: sender,
+//       to: recipient,
+//       subject: "Password Reset Successfully",
+//       html: htmlContent,
+//       category: "Password Reset",
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     throw new Error("Failed to send password reset success email");
+//   }}
