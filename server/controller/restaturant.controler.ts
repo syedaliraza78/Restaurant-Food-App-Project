@@ -171,6 +171,8 @@ export const searchRestaurant = async (req: Request, res: Response) => {
     // ["momos", "burger"]
     // console.log(query);
     // ["momos", "burger"]
+    // console.log(query);
+    // ["momos", "burger"]
     if (selectedCuisines.length > 0) {
       query.cuisines = { $in: selectedCuisines };
     }
