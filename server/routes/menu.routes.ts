@@ -3,7 +3,7 @@ import upload from "../middleware/multer.js";
 import { isAuthenticated } from "../middleware/isAuthenticated.js";
 import { addMenu, editMenu } from "../controller/menu.controler.js";
 
-const router = express.Router();
+const router: any = express.Router();
 
 router.route("/").post(isAuthenticated, upload.single("image"), addMenu);
 router.route("/:id").put(isAuthenticated, upload.single("image"), editMenu);

@@ -5,7 +5,7 @@ import {
   getOrders,
   stripeWebhook,
 } from "../controller/ordre.controler.js";
-const router = express.Router();
+const router: any = express.Router();
 
 router.route("/").get(isAuthenticated, getOrders);
 router

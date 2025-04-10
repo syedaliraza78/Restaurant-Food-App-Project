@@ -12,7 +12,7 @@ import {
 } from "../controller/user.controler.js";
 import { IUserDocument } from "../models/user.model.js";
 
-const router = express.Router();
+const router: any = express.Router();
 
 router.route("/checkauth").get(isAuthenticated, checkAuth);
 router.route("/signup").post(signup);
