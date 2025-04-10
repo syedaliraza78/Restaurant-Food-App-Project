@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 8000;
 import userRoute from "./routes/user.route.js";
 import restaurantRoute from "./routes/resturant.route.js";
 import menuRoute from "./routes/menu.routes.js";
+import orderRoute from "./routes/order.routes.js";
 
 // default middleware for any mern project
 app.use(bodyParser.json({ limit: "10mb" }));
@@ -26,6 +27,7 @@ app.use(cors(corsOptions));
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/restaurant", restaurantRoute);
 app.use("/api/v1/menu", menuRoute);
+app.use("/api/v1/order", orderRoute);
 
 app.listen(PORT, () => {
   connectDB();
