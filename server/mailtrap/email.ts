@@ -24,7 +24,6 @@ export const sendVerificationEmail = async (
     throw new Error("Failed to send email verification");
   }
 };
-
 export const sendWelcomeEmail = async (email: string, name: string) => {
   const recipient = [{ email }];
   const htmlContent = generateWelcomeEmailHtml(name);
@@ -32,10 +31,10 @@ export const sendWelcomeEmail = async (email: string, name: string) => {
     const res = await client.send({
       from: sender,
       to: recipient,
-      subject: "Welcome to Lazeez Bites",
+      subject: "Welcome to PatelEats",
       html: htmlContent,
       template_variables: {
-        company_info_name: "Lazeez Bites",
+        company_info_name: "PatelEats",
         name: name,
       },
     });
@@ -44,7 +43,6 @@ export const sendWelcomeEmail = async (email: string, name: string) => {
     throw new Error("Failed to send welcome email");
   }
 };
-
 export const sendPasswordResetEmail = async (
   email: string,
   resetURL: string
@@ -80,8 +78,3 @@ export const sendResetSuccessEmail = async (email: string) => {
     throw new Error("Failed to send password reset success email");
   }
 };
-
-// export const sendResetSuccessEmail = async (email: string) => {
-//   const recipient = [{ email }];
-//   const htmlContent = generateResetSuccessEmailHtml();
-//   try {

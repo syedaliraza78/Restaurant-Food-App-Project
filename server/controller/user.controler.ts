@@ -5,6 +5,8 @@ import crypto from "crypto";
 import cloudinary from "../utils/cloudnary.js";
 import { generateVerificationCode } from "../utils/generateVerficationCode.js";
 import { generateToken } from "../utils/generateToken.js";
+import { useNavigate } from "react-router-dom";
+
 import {
   sendPasswordResetEmail,
   sendResetSuccessEmail,
@@ -33,7 +35,8 @@ export const signup = async (req: Request, res: Response) => {
       verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000,
     });
     generateToken(res, user);
-    // await sendVerificationEmail(email, verificationToken);
+    await sendVerificationEmail(email, verificationToken);
+    // navigate("/verifyemail");
     const userWithoutPassword = await User.findOne({ email }).select(
       "-password"
     );

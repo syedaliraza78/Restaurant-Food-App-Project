@@ -90,7 +90,7 @@ export const useUserStore = create<UserState>()(
         try {
           set({ loading: true });
           const response = await axios.post(
-            `${API_END_POINT}/verify-email`,
+            `${API_END_POINT}/verifyemail`,
             { verificationCode },
             {
               headers: {

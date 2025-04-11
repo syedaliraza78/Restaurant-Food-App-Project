@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Separator } from "@/components/ui/separator"; // Ensure correct import
 import { LoginInputState, LoginzodSchema } from "@/schema/UserSchema";
+import { useUserStore } from "@/store/useUserStore";
 
 // here we can use typescript that means alreday define
 // the types of the used of the variables two method one
@@ -22,13 +23,14 @@ export const Login = () => {
 
   const [loading, setLoading] = useState(false); // Manage loading dynamically
   const [error, setError] = useState<Partial<LoginInputState>>({});
+  const { login } = useUserStore();
 
   const changeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInput({ ...input, [name]: value });
   };
 
-  const loginSubmitHandler = (e: FormEvent) => {
+  const loginSubmitHandler = async (e: FormEvent) => {
     e.preventDefault();
     // zod validation is successful
     const result = LoginzodSchema.safeParse(input);
@@ -41,12 +43,15 @@ export const Login = () => {
     setLoading(true);
 
     // Simulating an API call delay
-    setTimeout(() => {
-      setLoading(false);
-      console.log("Logged in:", input);
-    }, 2000);
-  };
 
+    // email: input.email,
+    // password: input.password,
+    await login(input);
+  };
+  setTimeout(() => {
+    setLoading(false);
+    console.log("Logged in:", input);
+  }, 2000);
   return (
     <div className="flex items-center justify-center min-h-screen">
       <form

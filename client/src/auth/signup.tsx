@@ -2,23 +2,13 @@ import { Loader2, LockKeyhole, Mail, PhoneCall, User } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import { Separator } from "@radix-ui/react-separator"; // Ensure correct import
+import { Link, useNavigate } from "react-router-dom";
+import { Separator } from "@radix-ui/react-separator";
 import { SignupInputState, SignupzodSchema } from "@/schema/UserSchema";
 import { useUserStore } from "@/store/useUserStore";
 
-// here we can use typescript that means alreday define
-// the types of the used of the variables two method one
-// is type other interface
-// if we use the zod then no need to define the type here
-// type SignupInputState = {
-//   username: string;
-//   email: string;
-//   password: string;
-//   phone: string;
-// };
-
 export const Signup = () => {
+  const navigate = useNavigate();
   const [input, setInput] = useState<SignupInputState>({
     fullname: "",
     email: "",
@@ -26,9 +16,10 @@ export const Signup = () => {
     contact: "",
   });
 
-  const [loading, setLoading] = useState(false); // Manage loading dynamically
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Partial<SignupInputState>>({});
   const { signup } = useUserStore();
+
   const changeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInput({ ...input, [name]: value });
@@ -36,27 +27,31 @@ export const Signup = () => {
 
   const loginSubmitHandler = async (e: FormEvent) => {
     e.preventDefault();
-    // zod validation is successful
     const result = SignupzodSchema.safeParse(input);
+
     if (!result.success) {
-      // if partial error one or more error
       const fieldErrors = result.error.formErrors.fieldErrors;
       setError(fieldErrors as Partial<SignupInputState>);
       return;
     }
-    // Simulating an API call delay
-    await signup({
-      fullname: input.fullname,
-      email: input.email,
-      password: input.password,
-      contact: input.contact,
-    });
+
+    setLoading(true);
+    try {
+      await signup({
+        fullname: input.fullname,
+        email: input.email,
+        password: input.password,
+        contact: input.contact,
+      });
+
+      navigate("/verifyemail");
+    } catch (err) {
+      console.error("Signup failed", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  setTimeout(() => {
-    setLoading(false);
-    console.log("Signup:", input);
-  }, 2000);
   return (
     <div className="flex items-center justify-center min-h-screen">
       <form
@@ -64,8 +59,10 @@ export const Signup = () => {
         className="md:p-8 w-full max-w-md rounded-lg md:border border-gray-200 mx-4"
       >
         <div className="mb-4 flex justify-center">
-          <h1 className="font-bold text-2xl">Lazeez Bites </h1>
+          <h1 className="font-bold text-2xl">Lazeez Bites</h1>
         </div>
+
+        {/* Full Name */}
         <div className="mb-4">
           <div className="relative">
             <Input
@@ -77,11 +74,13 @@ export const Signup = () => {
               className="pl-10 focus-visible:ring-1"
             />
             <User className="absolute inset-y-2 left-2 text-gray-500 pointer-events-none" />
-            {error && (
+            {error.fullname && (
               <span className="text-xs text-red-500">{error.fullname}</span>
             )}
           </div>
         </div>
+
+        {/* Email */}
         <div className="mb-4">
           <div className="relative">
             <Input
@@ -93,11 +92,13 @@ export const Signup = () => {
               className="pl-10 focus-visible:ring-1"
             />
             <Mail className="absolute inset-y-2 left-2 text-gray-500 pointer-events-none" />
-            {error && (
+            {error.email && (
               <span className="text-xs text-red-500">{error.email}</span>
             )}
           </div>
         </div>
+
+        {/* Password */}
         <div className="mb-4">
           <div className="relative">
             <Input
@@ -109,11 +110,13 @@ export const Signup = () => {
               className="pl-10 focus-visible:ring-1"
             />
             <LockKeyhole className="absolute inset-y-2 left-2 text-gray-500 pointer-events-none" />
-            {error && (
+            {error.password && (
               <span className="text-xs text-red-500">{error.password}</span>
             )}
           </div>
         </div>
+
+        {/* Phone */}
         <div className="mb-4">
           <div className="relative">
             <Input
@@ -125,31 +128,34 @@ export const Signup = () => {
               className="pl-10 focus-visible:ring-1"
             />
             <PhoneCall className="absolute inset-y-2 left-2 text-gray-500 pointer-events-none" />
-            {error && (
+            {error.contact && (
               <span className="text-xs text-red-500">{error.contact}</span>
             )}
           </div>
         </div>
 
+        {/* Submit */}
         <div className="mb-10">
-          {loading ? (
-            // when api in process below button is disabled
-            <Button disabled className="w-full bg-orange hover:bg-hoverOrange">
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
-            </Button>
-          ) : (
-            <Button
-              type="submit"
-              className="w-full bg-orange  cursor-pointer hover:bg-hoverOrange"
-            >
-              Signup
-            </Button>
-          )}
+          <Button
+            type="submit"
+            className="w-full bg-orange hover:bg-hoverOrange"
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
+              </>
+            ) : (
+              "Signup"
+            )}
+          </Button>
         </div>
 
         <Separator />
+
+        {/* Login Link */}
         <p className="mt-2 flex justify-center">
-          I have an account?{" "}
+          I have an account?
           <Link to="/login" className="text-blue-500 ml-1">
             Login
           </Link>
