@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Separator } from "@radix-ui/react-separator"; // Ensure correct import
 import { SignupInputState, SignupzodSchema } from "@/schema/UserSchema";
+import { useUserStore } from "@/store/useUserStore";
 
 // here we can use typescript that means alreday define
 // the types of the used of the variables two method one
@@ -19,20 +20,21 @@ import { SignupInputState, SignupzodSchema } from "@/schema/UserSchema";
 
 export const Signup = () => {
   const [input, setInput] = useState<SignupInputState>({
-    username: "",
+    fullname: "",
     email: "",
     password: "",
-    phone: "",
+    contact: "",
   });
 
   const [loading, setLoading] = useState(false); // Manage loading dynamically
   const [error, setError] = useState<Partial<SignupInputState>>({});
+  const { signup } = useUserStore();
   const changeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInput({ ...input, [name]: value });
   };
 
-  const loginSubmitHandler = (e: FormEvent) => {
+  const loginSubmitHandler = async (e: FormEvent) => {
     e.preventDefault();
     // zod validation is successful
     const result = SignupzodSchema.safeParse(input);
@@ -42,15 +44,19 @@ export const Signup = () => {
       setError(fieldErrors as Partial<SignupInputState>);
       return;
     }
-    setLoading(true);
-
     // Simulating an API call delay
-    setTimeout(() => {
-      setLoading(false);
-      console.log("Signup:", input);
-    }, 2000);
+    await signup({
+      fullname: input.fullname,
+      email: input.email,
+      password: input.password,
+      contact: input.contact,
+    });
   };
 
+  setTimeout(() => {
+    setLoading(false);
+    console.log("Signup:", input);
+  }, 2000);
   return (
     <div className="flex items-center justify-center min-h-screen">
       <form
@@ -65,14 +71,14 @@ export const Signup = () => {
             <Input
               type="text"
               placeholder="Full Name"
-              name="username"
-              value={input.username}
+              name="fullname"
+              value={input.fullname}
               onChange={changeEventHandler}
               className="pl-10 focus-visible:ring-1"
             />
             <User className="absolute inset-y-2 left-2 text-gray-500 pointer-events-none" />
             {error && (
-              <span className="text-xs text-red-500">{error.username}</span>
+              <span className="text-xs text-red-500">{error.fullname}</span>
             )}
           </div>
         </div>
@@ -113,14 +119,14 @@ export const Signup = () => {
             <Input
               type="number"
               placeholder="Phone"
-              name="phone"
-              value={input.phone}
+              name="contact"
+              value={input.contact}
               onChange={changeEventHandler}
               className="pl-10 focus-visible:ring-1"
             />
             <PhoneCall className="absolute inset-y-2 left-2 text-gray-500 pointer-events-none" />
             {error && (
-              <span className="text-xs text-red-500">{error.phone}</span>
+              <span className="text-xs text-red-500">{error.contact}</span>
             )}
           </div>
         </div>

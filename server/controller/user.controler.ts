@@ -33,7 +33,7 @@ export const signup = async (req: Request, res: Response) => {
       verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000,
     });
     generateToken(res, user);
-    await sendVerificationEmail(email, verificationToken);
+    // await sendVerificationEmail(email, verificationToken);
     const userWithoutPassword = await User.findOne({ email }).select(
       "-password"
     );
