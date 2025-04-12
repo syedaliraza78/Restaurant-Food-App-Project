@@ -31,12 +31,15 @@ export const VerifyEmail = () => {
       inputRef.current[index - 1].focus();
     }
   };
+
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const verificationCode = otp.join("");
     try {
-      await verifyEmail(verificationCode);
-      navigate("/login");
+      const status = await verifyEmail(verificationCode);
+      if (status === "ok") {
+        navigate("/login");
+      }
     } catch (error) {
       console.log(error);
     }

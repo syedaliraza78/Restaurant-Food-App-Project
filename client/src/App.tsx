@@ -14,6 +14,9 @@ import { Resturnat } from "./admin/Restaurant";
 import { AddMenu } from "./admin/AddMenu";
 import { AdminOrder } from "./admin/Order";
 import { Success } from "./components/Success";
+
+// we can add the protected routes
+// user cannot access the admin, login user cannot back to signup and login, new user cannot access the other roues as well
 const appRouter = createBrowserRouter([
   {
     path: "/",

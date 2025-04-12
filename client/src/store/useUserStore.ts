@@ -98,6 +98,7 @@ export const useUserStore = create<UserState>()(
               },
             }
           );
+
           if (response.data.success) {
             toast.success(response.data.message);
             set({
@@ -105,16 +106,21 @@ export const useUserStore = create<UserState>()(
               user: response.data.user,
               isAuthenticated: true,
             });
+
+            // ✅ Return something meaningful to handle in submitHandler
+            return "ok";
           }
         } catch (error: any) {
           toast.success(error.response.data.message);
           set({ loading: false });
+          // Optional: return a failure string if needed
+          return "error";
         }
       },
       checkAuthentication: async () => {
         try {
           set({ isCheckingAuth: true });
-          const response = await axios.get(`${API_END_POINT}/check-auth`);
+          const response = await axios.get(`${API_END_POINT}/checkauth`);
           if (response.data.success) {
             set({
               user: response.data.user,
