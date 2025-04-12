@@ -1,5 +1,9 @@
 import { Login } from "./auth/login";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 import { Signup } from "./auth/signup";
 import { ForgotPassword } from "./auth/ForgetPassword";
 import { ResetPassword } from "./auth/ResetPassword";
@@ -14,13 +18,51 @@ import { Resturnat } from "./admin/Restaurant";
 import { AddMenu } from "./admin/AddMenu";
 import { AdminOrder } from "./admin/Order";
 import { Success } from "./components/Success";
+import { useUserStore } from "./store/useUserStore";
 
 // we can add the protected routes
-// user cannot access the admin, login user cannot back to signup and login, new user cannot access the other roues as well
+// user cannot access the admin, login user cannot back to signup and login, new user cannot access the other roues as well4
+
+const ProtectedRoutes = ({ children }: { children: React.ReactNode }) => {
+  const { isAuthenticated, user } = useUserStore();
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (!user?.isVerified) {
+    return <Navigate to="/verifyemail" replace />;
+  }
+  return children;
+};
+
+const AuthenticatedUser = ({ children }: { children: React.ReactNode }) => {
+  const { isAuthenticated, user } = useUserStore();
+  if (isAuthenticated && user?.isVerified) {
+    return <Navigate to="/" replace />;
+  }
+  return children;
+};
+
+const AdminRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user, isAuthenticated } = useUserStore();
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+  if (!user?.admin) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+};
+
 const appRouter = createBrowserRouter([
   {
     path: "/",
-    element: <Mainlayout />,
+    element: (
+      <ProtectedRoutes>
+        <Mainlayout />
+      </ProtectedRoutes>
+    ),
     children: [
       {
         path: "/",
@@ -49,29 +91,53 @@ const appRouter = createBrowserRouter([
       // here admin service routes will be added
       {
         path: "admin/resturant",
-        element: <Resturnat />,
+        element: (
+          <AdminRoute>
+            <Resturnat />
+          </AdminRoute>
+        ),
       },
       {
         path: "admin/menu",
-        element: <AddMenu />,
+        element: (
+          <AdminRoute>
+            <AddMenu />
+          </AdminRoute>
+        ),
       },
       {
         path: "admin/orders",
-        element: <AdminOrder />,
+        element: (
+          <AdminRoute>
+            <AdminOrder />
+          </AdminRoute>
+        ),
       },
     ],
   },
   {
     path: "/login",
-    element: <Login />,
+    element: (
+      <AuthenticatedUser>
+        <Login />
+      </AuthenticatedUser>
+    ),
   },
   {
     path: "/signup",
-    element: <Signup />,
+    element: (
+      <AuthenticatedUser>
+        <Signup />
+      </AuthenticatedUser>
+    ),
   },
   {
     path: "/forgetpassword",
-    element: <ForgotPassword />,
+    element: (
+      <AuthenticatedUser>
+        <ForgotPassword />
+      </AuthenticatedUser>
+    ),
   },
   {
     path: "/resetpassword",
