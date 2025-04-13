@@ -2,7 +2,7 @@ import { Loader2, LockKeyhole, Mail } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Separator } from "@/components/ui/separator"; // Ensure correct import
 import { LoginInputState, LoginzodSchema } from "@/schema/UserSchema";
 import { useUserStore } from "@/store/useUserStore";
@@ -20,7 +20,7 @@ export const Login = () => {
     email: "",
     password: "",
   });
-
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false); // Manage loading dynamically
   const [error, setError] = useState<Partial<LoginInputState>>({});
   const { login } = useUserStore();
@@ -46,7 +46,14 @@ export const Login = () => {
 
     // email: input.email,
     // password: input.password,
-    await login(input);
+    try {
+      await login(input);
+      navigate("/verifyemail");
+    } catch (err) {
+      console.error("Signup failed", err);
+    } finally {
+      setLoading(false);
+    }
   };
   setTimeout(() => {
     setLoading(false);

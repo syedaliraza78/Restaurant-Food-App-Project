@@ -26,11 +26,11 @@ import { useUserStore } from "./store/useUserStore";
 const ProtectedRoutes = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, user } = useUserStore();
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    // return <Navigate to="/login" replace />;
   }
 
   if (!user?.isVerified) {
-    return <Navigate to="/verifyemail" replace />;
+    // return <Navigate to="/verifyemail" replace />;
   }
   return children;
 };
@@ -38,7 +38,7 @@ const ProtectedRoutes = ({ children }: { children: React.ReactNode }) => {
 const AuthenticatedUser = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, user } = useUserStore();
   if (isAuthenticated && user?.isVerified) {
-    return <Navigate to="/" replace />;
+    // return <Navigate to="/" replace />;
   }
   return children;
 };
@@ -46,10 +46,10 @@ const AuthenticatedUser = ({ children }: { children: React.ReactNode }) => {
 const AdminRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, isAuthenticated } = useUserStore();
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    // return <Navigate to="/login" replace />;
   }
   if (!user?.admin) {
-    return <Navigate to="/" replace />;
+    // return <Navigate to="/" replace />;
   }
 
   return children;
