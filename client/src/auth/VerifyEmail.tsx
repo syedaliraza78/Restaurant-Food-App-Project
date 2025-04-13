@@ -38,7 +38,7 @@ export const VerifyEmail = () => {
     try {
       const status = await verifyEmail(verificationCode);
       if (status === "ok") {
-        navigate("/login");
+        navigate("/");
       }
     } catch (error) {
       console.log(error);

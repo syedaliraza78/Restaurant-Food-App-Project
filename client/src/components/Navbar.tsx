@@ -39,15 +39,15 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
 import { useUserStore } from "@/store/useUserStore";
 import { Separator } from "./ui/separator";
-const loading = false;
+// const loading = false;
 
 export const Navbar = () => {
-  const admin = true;
-  const user = { admin };
+  // const admin = true;
+  const { loading, user, logout } = useUserStore();
+  // const user = { admin };
+
   return (
     <div className="max-w-7xl mx-auto">
       <div className="flex items-center justify-between h-14">
@@ -129,7 +129,7 @@ export const Navbar = () => {
                 </Button>
               ) : (
                 <Button
-                  //   onClick={logout}
+                  onClick={logout}
                   className="bg-orange hover:bg-hoverOrange cursor-pointer"
                 >
                   Logout
@@ -138,7 +138,7 @@ export const Navbar = () => {
             </div>
           </div>
         </div>
-        <div className="md:hidden lg:hidden">
+        <div className="md:hidden lg:hidden ">
           <MobileNavbar />
         </div>
       </div>
@@ -155,7 +155,7 @@ const MobileNavbar = () => {
       <SheetTrigger asChild>
         <Button
           size={"icon"}
-          className="rounded-full bg-gray-200 text-black hover:bg-gray-200"
+          className="rounded-full bg-gray-200 text-black hover:bg-gray-200 cuirsor-pointer"
           variant="outline"
         >
           <Menu size={"18"} />
@@ -203,21 +203,21 @@ const MobileNavbar = () => {
           </Link>
 
           {/*  */}
-          <Link
+          {/* <Link
             to="/admin/resturant"
             className="flex items-center gap-4 hover:bg-gray-200 px-3 py-2 rounded-lg cursor-pointer hover:text-gray-900 font-medium"
           >
             <ShoppingCart />
             <span>Resturant</span>
           </Link>
-          {/*  */}
+      
           <Link
             to="/admin/orders"
             className="flex items-center gap-4 hover:bg-gray-200 px-3 py-2 rounded-lg cursor-pointer hover:text-gray-900 font-medium"
           >
             <PackageCheck />
             <span>Restaurant Orders</span>
-          </Link>
+          </Link> */}
 
           {/*  */}
           {user?.admin && (
@@ -263,7 +263,7 @@ const MobileNavbar = () => {
             ) : (
               <Button
                 onClick={logout}
-                className="bg-orange hover:bg-hoverOrange"
+                className="bg-orange hover:bg-hoverOrange cursor-pointer"
               >
                 Logout
               </Button>

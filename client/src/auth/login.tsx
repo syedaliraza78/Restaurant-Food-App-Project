@@ -48,7 +48,7 @@ export const Login = () => {
     // password: input.password,
     try {
       await login(input);
-      navigate("/verifyemail");
+      navigate("/");
     } catch (err) {
       console.error("Signup failed", err);
     } finally {

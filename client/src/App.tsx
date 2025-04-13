@@ -19,6 +19,8 @@ import { AddMenu } from "./admin/AddMenu";
 import { AdminOrder } from "./admin/Order";
 import { Success } from "./components/Success";
 import { useUserStore } from "./store/useUserStore";
+import { useEffect } from "react";
+import Loading from "./components/ui/Loading";
 
 // we can add the protected routes
 // user cannot access the admin, login user cannot back to signup and login, new user cannot access the other roues as well4
@@ -26,11 +28,11 @@ import { useUserStore } from "./store/useUserStore";
 const ProtectedRoutes = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, user } = useUserStore();
   if (!isAuthenticated) {
-    // return <Navigate to="/login" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   if (!user?.isVerified) {
-    // return <Navigate to="/verifyemail" replace />;
+    return <Navigate to="/verifyemail" replace />;
   }
   return children;
 };
@@ -38,7 +40,7 @@ const ProtectedRoutes = ({ children }: { children: React.ReactNode }) => {
 const AuthenticatedUser = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, user } = useUserStore();
   if (isAuthenticated && user?.isVerified) {
-    // return <Navigate to="/" replace />;
+    return <Navigate to="/" replace />;
   }
   return children;
 };
@@ -46,10 +48,10 @@ const AuthenticatedUser = ({ children }: { children: React.ReactNode }) => {
 const AdminRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, isAuthenticated } = useUserStore();
   if (!isAuthenticated) {
-    // return <Navigate to="/login" replace />;
+    return <Navigate to="/login" replace />;
   }
   if (!user?.admin) {
-    // return <Navigate to="/" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return children;
@@ -150,6 +152,14 @@ const appRouter = createBrowserRouter([
 ]);
 
 function App() {
+  const { checkAuthentication, isCheckingAuth } = useUserStore();
+  // checking auth every time when page is loaded
+  useEffect(() => {
+    checkAuthentication();
+    //initializeTheme();
+  }, [checkAuthentication]);
+
+  if (isCheckingAuth) return <Loading />;
   return (
     <main>
       <RouterProvider router={appRouter}></RouterProvider>
