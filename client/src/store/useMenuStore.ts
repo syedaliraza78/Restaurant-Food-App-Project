@@ -4,7 +4,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { useRestaurantStore } from "./useRestaurantStore";
 
-const API_END_POINT = "https://food-app-yt.onrender.com/api/v1/menu";
+const API_END_POINT = "http://localhost:8000/api/v1/menu";
 axios.defaults.withCredentials = true;
 
 type MenuState = {
@@ -22,11 +22,14 @@ export const useMenuStore = create<MenuState>()(
       createMenu: async (formData: FormData) => {
         try {
           set({ loading: true });
+          console.log("FormData sent:", formData);
           const response = await axios.post(`${API_END_POINT}/`, formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
           });
+          console.log("Response:", response);
+
           if (response.data.success) {
             toast.success(response.data.message);
             set({ loading: false, menu: response.data.menu });

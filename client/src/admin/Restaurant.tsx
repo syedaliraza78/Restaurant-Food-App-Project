@@ -7,7 +7,7 @@ import {
 import { useRestaurantStore } from "@/store/useRestaurantStore";
 import { Label } from "@radix-ui/react-menubar";
 import { Loader2 } from "lucide-react";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 export const Resturnat = () => {
   const [input, setInput] = useState<RestaurantFormSchema>({
@@ -20,7 +20,7 @@ export const Resturnat = () => {
   });
   const [errors, setErrors] = useState<Partial<RestaurantFormSchema>>({});
   const {
-    // loading,
+    loading,
     restaurant,
     updateRestaurant,
     createRestaurant,
@@ -30,17 +30,11 @@ export const Resturnat = () => {
     const { name, value, type } = e.target;
     setInput({ ...input, [name]: type === "number" ? Number(value) : value });
   };
-  const [loading, setLoading] = useState(false); // Manage loading dynamically
+  // const [loading, setLoading] = useState(false); // Manage loading dynamically
 
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
 
-    // Simulating an API call delay
-    setTimeout(() => {
-      setLoading(false);
-      console.log("Logged in:", input);
-    }, 2000);
     const result = restaurantFromSchema.safeParse(input);
     if (!result.success) {
       const fieldErrors = result.error.formErrors.fieldErrors;
@@ -72,6 +66,26 @@ export const Resturnat = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    const fetchRestaurant = async () => {
+      await getRestaurant();
+      if (restaurant) {
+        setInput({
+          restaurantName: restaurant.restaurantName || "",
+          city: restaurant.city || "",
+          country: restaurant.country || "",
+          deliveryTime: restaurant.deliveryTime || 0,
+          cuisines: restaurant.cuisines
+            ? restaurant.cuisines.map((cuisine: string) => cuisine)
+            : [],
+          imageFile: undefined,
+        });
+      }
+    };
+    fetchRestaurant();
+    console.log(restaurant);
+  }, []);
 
   return (
     <div className="max-w-6xl mx-auto my-10">

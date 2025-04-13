@@ -10,16 +10,16 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { MenuFormSchema } from "@/schema/menuSchema";
+import { MenuFormSchema, menuSchema } from "@/schema/menuSchema";
 import { useMenuStore } from "@/store/useMenuStore";
 import { useRestaurantStore } from "@/store/useRestaurantStore";
 import { Loader2, Plus } from "lucide-react";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { EditMenu } from "./EditMenu";
 
 export const AddMenu = () => {
   const [open, setOpen] = useState<boolean>(false);
-  const { loading, createMenu } = useMenuStore();
+  const { createMenu } = useMenuStore();
   const { restaurant } = useRestaurantStore();
   const [editOpen, setEditOpen] = useState<boolean>(false);
   const [selectedMenu, setSelectedMenu] = useState<any>();
@@ -30,9 +30,34 @@ export const AddMenu = () => {
     price: 0,
     image: undefined,
   });
+  const loading = false;
   const changeEventHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type } = e.target;
     setInput({ ...input, [name]: type === "number" ? Number(value) : value });
+  };
+
+  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const result = menuSchema.safeParse(input);
+    if (!result.success) {
+      const fieldErrors = result.error.formErrors.fieldErrors;
+      setError(fieldErrors as Partial<MenuFormSchema>);
+      return;
+    }
+    // api ka kaam start from here
+
+    try {
+      const formData = new FormData();
+      formData.append("name", input.name);
+      formData.append("description", input.description);
+      formData.append("price", input.price.toString());
+      if (input.image) {
+        formData.append("image", input.image);
+      }
+      await createMenu(formData);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className="max-w-6xl mx-auto my-10">
@@ -41,9 +66,9 @@ export const AddMenu = () => {
           Available Menus
         </h1>
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger>
+          <DialogTrigger asChild>
             <Button className="bg-orange hover:bg-hoverOrange">
-              <Plus className="mr-2" />
+              <Plus className="" />
               Add Menus
             </Button>
           </DialogTrigger>
@@ -54,7 +79,7 @@ export const AddMenu = () => {
                 Create a menu that will make your restaurant stand out.
               </DialogDescription>
             </DialogHeader>
-            <form>
+            <form onSubmit={submitHandler} className="space-y-4">
               <div>
                 <Label className="mb-2 ml-1">Name</Label>
                 <Input
