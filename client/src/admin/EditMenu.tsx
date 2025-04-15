@@ -46,7 +46,9 @@ export const EditMenu = ({
     const result = menuSchema.safeParse(input); // ✅ Fixed validation bug
 
     if (!result.success) {
-      setError(result.error.formErrors.fieldErrors as Partial<MenuFormSchema>);
+      const fieldErrors = result.error.formErrors.fieldErrors;
+      setError(fieldErrors as Partial<MenuFormSchema>);
+      // setError(result.error.formErrors.fieldErrors as Partial<MenuFormSchema>);
       return;
     }
 
@@ -60,7 +62,7 @@ export const EditMenu = ({
       }
 
       await editMenu(selectedMenu._id, formData);
-      setEditOpen(false); // Close modal after successful update
+      // setEditOpen(false); // Close modal after successful update
     } catch (error) {
       console.error("Edit Menu Error:", error);
     }

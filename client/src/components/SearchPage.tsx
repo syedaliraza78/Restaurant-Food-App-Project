@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { FilterPage } from "./FilterPage";
 import { Input } from "./ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRestaurantStore } from "@/store/useRestaurantStore";
 import { Button } from "./ui/button";
 import { Globe, MapPin, X } from "lucide-react";
@@ -23,6 +23,9 @@ export const SearchPage = () => {
   } = useRestaurantStore();
 
   const param = useParams();
+  useEffect(() => {
+    searchRestaurant(params.text!, searchQuery, appliedFilter);
+  }, [params.text!, appliedFilter]);
   return (
     <div className="max-w-7xl mx-auto my-10">
       <div className="flex flex-col md:flex-row justify-between gap-10">
