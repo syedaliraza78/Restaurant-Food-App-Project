@@ -1,6 +1,3 @@
-import { FormEvent, useRef, useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { useUserStore } from "@/store/useUserStore";
 import {
   Loader2,
   LocateIcon,
@@ -9,13 +6,16 @@ import {
   MapPinnedIcon,
   Plus,
 } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { FormEvent, useRef, useState } from "react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
+import { useUserStore } from "@/store/useUserStore";
 
 export const Profile = () => {
-  const { user, updateProfile } = useUserStore(); // Moved inside the component
-
+  const { user, updateProfile } = useUserStore();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [profileData, setProfileData] = useState({
     fullname: user?.fullname || "",
     email: user?.email || "",
@@ -24,12 +24,7 @@ export const Profile = () => {
     country: user?.country || "",
     profilePicture: user?.profilePicture || "",
   });
-
-  const [loading, setLoading] = useState<boolean>(false); // Manage loading dynamically
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const imageRef = useRef<HTMLInputElement | null>(null);
-
   const [selectedProfilePicture, setSelectedProfilePicture] = useState<string>(
     profileData.profilePicture || ""
   );
@@ -49,6 +44,7 @@ export const Profile = () => {
       reader.readAsDataURL(file);
     }
   };
+
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setProfileData({ ...profileData, [name]: value });
@@ -64,13 +60,14 @@ export const Profile = () => {
       setIsLoading(false);
     }
   };
+
   return (
     <form onSubmit={updateProfileHandler} className="max-w-7xl mx-auto my-5">
-      <div className="flex items-center justify-between mx-10">
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Avatar className="relative md:w-28 md:h-28 w-20 h-20">
             <AvatarImage src={selectedProfilePicture} />
-            <AvatarFallback>Profile</AvatarFallback>
+            <AvatarFallback>CN</AvatarFallback>
             <input
               ref={imageRef}
               className="hidden"
@@ -94,13 +91,13 @@ export const Profile = () => {
           />
         </div>
       </div>
-      <div className="grid md:grid-cols-4 md:gap-2 gap-3 my-10 mx-10">
+      <div className="grid md:grid-cols-4 md:gap-2 gap-3 my-10">
         <div className="flex items-center gap-4 rounded-sm p-2 bg-gray-200">
           <Mail className="text-gray-500" />
           <div className="w-full">
             <Label>Email</Label>
             <input
-              // disabled
+              disabled
               name="email"
               value={profileData.email}
               onChange={changeHandler}
@@ -146,16 +143,13 @@ export const Profile = () => {
         </div>
       </div>
       <div className="text-center">
-        {loading ? (
-          // when api in process below button is disabled
+        {isLoading ? (
           <Button disabled className="bg-orange hover:bg-hoverOrange">
             <Loader2 className="mr-2 w-4 h-4 animate-spin" />
+            Please wait
           </Button>
         ) : (
-          <Button
-            type="submit"
-            className=" bg-orange hover:bg-hoverOrange cursor-pointer mb-15"
-          >
+          <Button type="submit" className="bg-orange hover:bg-hoverOrange">
             Update
           </Button>
         )}

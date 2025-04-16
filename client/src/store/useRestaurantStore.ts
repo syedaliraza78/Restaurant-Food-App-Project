@@ -77,7 +77,7 @@ export const useRestaurantStore = create<RestaurantState>()(
           params.set("searchQuery", searchQuery);
           params.set("selectedCuisines", selectedCuisines.join(","));
 
-          await new Promise((resolve) => setTimeout(resolve, 2000));
+          // await new Promise((resolve) => setTimeout(resolve, 2000));
           const response = await axios.get(
             `${API_END_POINT}/search/${searchText}?${params.toString()}`
           );
