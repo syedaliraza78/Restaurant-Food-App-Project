@@ -138,6 +138,8 @@ export const Profile = () => {
               value={profileData.country}
               onChange={changeHandler}
               className="w-full text-gray-600 bg-transparent focus-visible:ring-0 focus-visible:border-transparent outline-none border-none"
+
+              // className="w-full text-gray-600 bg-transparent focus-visible:ring-0 focus-visible:border-transparent outline-none border-none"
             />
           </div>
         </div>
