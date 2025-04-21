@@ -52,8 +52,7 @@ export const SearchPage = () => {
           <div>
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-2 my-3">
               <h1 className="font-medium text-lg">
-                {/* ({searchedRestaurant?.data.length})  */}
-                (3) Search result found
+                ({searchedRestaurant?.data.length}) Search result found
               </h1>
               <div className="flex flex-wrap gap-2 mb-4 md:mb-0">
                 {appliedFilter.map((selectedFilter: string, idx: number) => (
