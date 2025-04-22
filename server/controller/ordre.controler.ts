@@ -150,7 +150,11 @@ export const createLineItems = (
     const menuItem = menuItems.find(
       (item: any) => item._id.toString() === cartItem.menuId
     );
-    if (!menuItem) throw new Error(`Menu item id not found`);
+    // if (!menuItem) throw new Error(`Menu item id not found`);
+    if (!menuItem) {
+      console.warn(`Menu item not found for ID: ${cartItem.menuId}`);
+      throw new Error(`Invalid menu item in cart. Please try again.`);
+    }
 
     return {
       price_data: {

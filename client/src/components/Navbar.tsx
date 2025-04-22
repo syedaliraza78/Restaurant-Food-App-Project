@@ -41,11 +41,13 @@ import {
 } from "./ui/sheet";
 import { useUserStore } from "@/store/useUserStore";
 import { Separator } from "./ui/separator";
+import { useCartStore } from "@/store/useCartStore";
 // const loading = false;
 
 export const Navbar = () => {
   // const admin = true;
   const { loading, user, logout } = useUserStore();
+  const cart = useCartStore;
   // const user = { admin };
 
   return (
@@ -106,18 +108,22 @@ export const Navbar = () => {
             </div>
             <Link to="/cart" className="relative cursor-pointer">
               <ShoppingCart />
-              {/* {cart.length > 0 && ( */}
-              <Button
-                size={"icon"}
-                className="absolute -inset-y-3 left-2 text-xs rounded-full w-4 h-4 bg-red-500 hover:bg-red-500"
-              >
-                {/* {cart.length} */}
-              </Button>
-              {/* )} */}
+              {cart.length > 0 && (
+                <Button
+                  size={"icon"}
+                  className="absolute -inset-y-3 left-2 text-xs rounded-full w-4 h-4 bg-red-500 hover:bg-red-500"
+                >
+                  {cart.length}
+                </Button>
+              )}
             </Link>
             <div>
               <Avatar>
-                <AvatarImage />
+                <AvatarImage
+                  src={user?.profilePicture}
+                  alt="profilephoto"
+                  className="w-8 l-8 rounded-full"
+                />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </div>
@@ -249,7 +255,10 @@ const MobileNavbar = () => {
         <SheetFooter className="flex flex-col gap-4">
           <div className="flex flex-row items-center gap-2">
             <Avatar>
-              <AvatarImage src={user?.profilePicture} />
+              <AvatarImage
+                src={user?.profilePicture}
+                className="w-8 l-8 rounded-full"
+              />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <h1 className="font-bold">Syed Ali Raza </h1>

@@ -4,6 +4,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -16,9 +17,12 @@ import { CheckoutConfirmPage } from "./CheckoutConfirmPage";
 
 export const Cart = () => {
   const [open, setOpen] = useState<boolean>(false);
+  const { cart, decrementQuantity, incrementQuantity, removeFromTheCart } =
+    useCartStore();
 
-  const { cart, decrementQuantity, incrementQuantity } = useCartStore();
-
+  let totalAmount = cart.reduce((acc, ele) => {
+    return acc + ele.price * ele.quantity;
+  }, 0);
   return (
     <div className="flex flex-col max-w-7xl mx-auto my-10">
       <div className="flex justify-end">
@@ -48,7 +52,6 @@ export const Cart = () => {
               <TableCell> {item.price}</TableCell>
               <TableCell>
                 <div className="w-fit flex items-center rounded-full border border-gray-100 dark:border-gray-800 shadow-md">
-                  {" "}
                   <Button
                     onClick={() => decrementQuantity(item._id)}
                     size={"icon"}
@@ -75,11 +78,26 @@ export const Cart = () => {
                   </Button>
                 </div>
               </TableCell>
+              <TableCell>{item.price * item.quantity}</TableCell>
+              <TableCell className="text-right">
+                <Button
+                  size={"sm"}
+                  className="bg-orange hover:bg-hoverOrange cursor-pointer"
+                  onClick={() => removeFromTheCart(item._id)}
+                >
+                  Remove
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
+        <TableFooter>
+          <TableRow className="text-2xl font-bold">
+            <TableCell colSpan={5}>Total</TableCell>
+            <TableCell className="text-right">{totalAmount}</TableCell>
+          </TableRow>
+        </TableFooter>
       </Table>
-      {/* button recheck the information */}
       <div className="flex justify-end my-5">
         <Button
           onClick={() => setOpen(true)}
