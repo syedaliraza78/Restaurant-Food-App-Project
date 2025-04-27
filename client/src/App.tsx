@@ -21,6 +21,7 @@ import { Success } from "./components/Success";
 import { useUserStore } from "./store/useUserStore";
 import { useEffect } from "react";
 import Loading from "./components/ui/Loading";
+import { useThemeStore } from "./store/useThemeStore";
 
 // we can add the protected routes
 // user cannot access the admin, login user cannot back to signup and login, new user cannot access the other roues as well4
@@ -152,11 +153,13 @@ const appRouter = createBrowserRouter([
 ]);
 
 function App() {
+  const initializeTheme = useThemeStore((state: any) => state.initializeTheme);
+
   const { checkAuthentication, isCheckingAuth } = useUserStore();
   // checking auth every time when page is loaded
   useEffect(() => {
     checkAuthentication();
-    //initializeTheme();
+    initializeTheme();
   }, [checkAuthentication]);
 
   if (isCheckingAuth) return <Loading />;
