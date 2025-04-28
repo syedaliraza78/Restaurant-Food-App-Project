@@ -171,5 +171,13 @@ export const useRestaurantStore = create<RestaurantState>()(
       name: "restaurant-name",
       storage: createJSONStorage(() => localStorage),
     }
+    //  {
+    //   name: "restaurant-name",
+    //   storage: createJSONStorage(() => localStorage),
+    // }
+    //  {
+    //   name: "restaurant-name",
+    //   storage: createJSONStorage(() => localStorage),
+    // }
   )
 );
