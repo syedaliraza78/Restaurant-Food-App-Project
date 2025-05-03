@@ -33,6 +33,10 @@ export const Login = () => {
   //   const { name, value } = e.target;
   //   setInput({ ...input, [name]: value });
   // };
+    // const changeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.target;
+  //   setInput({ ...input, [name]: value });
+  // };
 
   const loginSubmitHandler = async (e: FormEvent) => {
     e.preventDefault();
