@@ -15,6 +15,10 @@ export const ForgotPassword = () => {
       setLoading(false);
       console.log("Forgot password:", email);
     }, 2000);
+    //   setTimeout(() => {
+    //   setLoading(false);
+    //   console.log("Forgot password:", email);
+    // }, 2000);
   };
   return (
     <div className="flex items-center justify-center min-h-screen w-full">
