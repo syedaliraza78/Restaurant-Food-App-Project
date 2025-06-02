@@ -167,6 +167,9 @@ function App() {
     <main>
       <RouterProvider router={appRouter}></RouterProvider>
     </main>
+     <main>
+      <RouterProvider router={appRouter}></RouterProvider>
+    </main>
   );
 }
 
