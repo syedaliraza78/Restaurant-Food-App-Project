@@ -73,6 +73,9 @@ export const Login = () => {
         <div className="mb-4 flex justify-center">
           <h1 className="font-bold text-2xl">Lazeez Bites </h1>
         </div>
+          {/* <div className="mb-4 flex justify-center">
+          <h1 className="font-bold text-2xl">Lazeez Bites </h1>
+        </div> */}
         <div className="mb-4">
           <div className="relative">
             <Input
