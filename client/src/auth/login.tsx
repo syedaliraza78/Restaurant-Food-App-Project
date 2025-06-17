@@ -106,12 +106,7 @@ export const Login = () => {
             {error && (
               <span className="text-xs text-red-500">{error.password}</span>
             )}
-              {/* {error && (
-              <span className="text-xs text-red-500">{error.password}</span>
-            )} */}
-              {/* {error && (
-              <span className="text-xs text-red-500">{error.password}</span>
-            )} */}
+           
           </div>
         </div>
         <div className="mb-10">
