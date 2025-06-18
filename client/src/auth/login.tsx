@@ -128,6 +128,7 @@ export const Login = () => {
               to="/forgetpassword"
               className="hover:text-blue-500 hover:underline"
             >
+              
               Forgot Password
             </Link>
           </div>
@@ -139,6 +140,9 @@ export const Login = () => {
           <Link to="/signup" className="text-blue-500 ml-1">
             Signup
           </Link>
+          {/* <Link to="/signup" className="text-blue-500 ml-1">
+            Signup
+          </Link> */}
         </p>
       </form>
     </div>
