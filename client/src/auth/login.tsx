@@ -140,12 +140,7 @@ export const Login = () => {
           <Link to="/signup" className="text-blue-500 ml-1">
             Signup
           </Link>
-          {/* <Link to="/signup" className="text-blue-500 ml-1">
-            Signup
-          </Link> */}
-          {/* <Link to="/signup" className="text-blue-500 ml-1">
-            Signup
-          </Link> */}
+          
         </p>
       </form>
     </div>
